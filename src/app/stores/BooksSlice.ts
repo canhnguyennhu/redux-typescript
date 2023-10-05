@@ -1,6 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 import data from "./dummy/data";
-export const initialState = {
+import { RootOptions } from "react-dom/client";
+import { RootState } from "./Store";
+
+export interface InitialState {
+	books: Object,
+	openingNewBook: Boolean
+}
+
+export const initialState: InitialState = {
   books: data,
 	openingNewBook: false,
 }

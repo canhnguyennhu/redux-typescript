@@ -1,26 +1,27 @@
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux'
+import { useAppDispatch, AppDispatch } from "../../stores/Store";
 import menus from "../../configs/menus";
 import { setOpeningNewBook, updateBook } from "../../stores/BooksSlice"
+import BookInput from '../BookInput';
 import "./style.css";
 
 const Book = ({}) => {
 	const [name, setName] = useState('');
 	const [author, setAuthor] = useState('');
 	const [type, setType] = useState("economy");
-	const dispatch = useDispatch();
+	const dispatch: AppDispatch = useAppDispatch();
 
-	const onChangeText = (e : any) => {
+	const onChangeText = (e : React.ChangeEvent<HTMLInputElement>): void => {
 		const value = e.target.value;
 		const name = e.target.name;
 		if (name === "name") {
-			setName(value);
+			setName(value)
 		} else if (name === "author") {
 			setAuthor(value);
 		}
 	}
 
-	const onSubmit = () => {
+	const onSubmit = (): void => {
 		const book = {
 				name: name,
 				author: author,
@@ -31,11 +32,11 @@ const Book = ({}) => {
 		dispatch(setOpeningNewBook(false));
 	}
 
-	const onChangeBookType = (e : any) => {
+	const onChangeBookType = (e : React.ChangeEvent<HTMLSelectElement>) : void=> {
 		setType(e.target.value)
 	}
 
-	const closeModal = () => {
+	const closeModal = (): void => {
 		dispatch(setOpeningNewBook(false));
 	}
 	return (
@@ -44,8 +45,8 @@ const Book = ({}) => {
 				<span className="title">Add New Book Form</span>
 				<span className="icon-close" onClick={closeModal}>X</span>
 			</div>
-			<BookText name="name" label="Book Name" onChangeText={onChangeText} text={name}></BookText>
-			<BookText name="author" label="Author" onChangeText={onChangeText} text={author}></BookText>
+			<BookInput name="name" label="Book Name" onChangeText={onChangeText} text={name}></BookInput>
+			<BookInput name="author" label="Author" onChangeText={onChangeText} text={author}></BookInput>
 			<div className="book-field">
 				<span className="label">Book Type</span>
 				<select className="input-field select" onChange={onChangeBookType}>
@@ -64,24 +65,5 @@ const Book = ({}) => {
 	)
 }
 
-interface  Props{
-	name: string,
-	label: string,
-	text: string,
-	onChangeText: any
-}
-
-const BookText = ({ name, label, text, onChangeText } : Props) => (
-	<div className="book-field">
-		<span className="label">{label}</span>
-		<input 
-			className="input-field"
-			name={name}
-			type="text" 
-			value={text}
-			onChange={onChangeText}
-		/>
-	</div>
-)
 
 export default Book;
